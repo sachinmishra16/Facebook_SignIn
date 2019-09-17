@@ -19,11 +19,13 @@ import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.login.LoginManager;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class AfterLogin_Activity extends AppCompatActivity {
 
     Button btn_logout;
 
-    ImageView imageView;
+    CircleImageView imageView;
     TextView textView,text_email;
 
     SharedPreferences sharedPreferences;
@@ -45,14 +47,25 @@ public class AfterLogin_Activity extends AppCompatActivity {
 
         btn_logout=findViewById(R.id.btn_logout);
 
+        Bundle bundle=getIntent().getExtras();
+
+
+        String name=bundle.getString("username");
+        String image_url=bundle.getString("imageurl");
+
+        btn_logout=findViewById(R.id.btn_logout);
+
         imageView=findViewById(R.id.profilepic_id);
         textView=findViewById(R.id.text_nameid);
         text_email=findViewById(R.id.text_emailid);
 
+        textView.setText(name);
+        Glide.with(AfterLogin_Activity.this).load(image_url).into(imageView);
 
         sharedPreferences = getSharedPreferences("pref", Context.MODE_PRIVATE);
 
         editor = sharedPreferences.edit();
+
 
       /*  Bundle bundle=getIntent().getExtras();
 

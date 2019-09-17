@@ -8,14 +8,16 @@
     tools:context=".AfterLogin_Activity">
 
 
-    <ImageView
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profilepic_id"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginTop="50dp"
-        android:foregroundGravity="center_horizontal"
-        android:src="@android:mipmap/sym_def_app_icon" />
+        android:layout_marginLeft="100dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"/>
 
     <TextView
         android:id="@+id/text_nameid"
@@ -37,9 +39,11 @@
 
     <Button
         android:id="@+id/btn_logout"
-        android:layout_marginTop="100dp"
+        android:background="#416BC1"
+        android:textColor="#ffffff"
+        android:layout_marginTop="50dp"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="log out"
         app:layout_constraintBottom_toBottomOf="parent"

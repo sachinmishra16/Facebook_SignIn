@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.se.omapi.Session;
 import android.util.Log;
 import android.view.View;
@@ -65,26 +66,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        loginButton=findViewById(R.id.login_button);
-        imageView=findViewById(R.id.profilepic_id);
-        textView=findViewById(R.id.text_nameid);
-        text_email=findViewById(R.id.text_emailid);
-        button=findViewById(R.id.btn_loginid);
+        loginButton = findViewById(R.id.login_button);
+        imageView = findViewById(R.id.profilepic_id);
+        textView = findViewById(R.id.text_nameid);
+        text_email = findViewById(R.id.text_emailid);
+        button = findViewById(R.id.btn_loginid);
 
+        
 
-       // loginButton.setReadPermissions(Arrays.asList("email","public_profile"));
+        // loginButton.setReadPermissions(Arrays.asList("email","public_profile"));
 
         sharedPreferences = getSharedPreferences("pref", Context.MODE_PRIVATE);
-        preferences=getSharedPreferences("pref",Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("pref", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        String name=preferences.getString("name",null);
-        if (name!=null)
-        {
+        String name = preferences.getString("name", null);
+        if (name != null) {
             //   Toast.makeText(this, "signed in", Toast.LENGTH_SHORT).show();
 
 
-            startActivity(new Intent(MainActivity.this,AfterLogin_Activity.class));
+            final Profile profile = Profile.getCurrentProfile();
+
+
+            Intent intent = new Intent(MainActivity.this, AfterLogin_Activity.class);
+            intent.putExtra("username", profile.getFirstName()+" "+profile.getLastName());
+            intent.putExtra("imageurl", profile.getProfilePictureUri(150, 150).toString());
+
+            Toast.makeText(MainActivity.this, "" + profile.getFirstName(), Toast.LENGTH_SHORT).show();
+
+            editor.putString("name", profile.getFirstName());
+            editor.commit();
+
+            startActivity(intent);
+
+
+
         }
 
         FacebookSdk.sdkInitialize(this.getApplicationContext());
@@ -99,20 +115,27 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Success", "Login");
 
 
-                        Toast.makeText(MainActivity.this, "success"+loginResult.getAccessToken(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(MainActivity.this, "success"+loginResult.getAccessToken(), Toast.LENGTH_SHORT).show();
 
                         Log.d("user_id",loginResult.getAccessToken().getUserId());
                         Profile profile=Profile.getCurrentProfile();
 
+                        Intent intent=new Intent(MainActivity.this,AfterLogin_Activity.class);
+                        intent.putExtra("username",profile.getFirstName());
+                        intent.putExtra("imageurl",profile.getProfilePictureUri(150,150).toString());
+
+
+                       // Toast.makeText(MainActivity.this, ""+profile.getFirstName(), Toast.LENGTH_SHORT).show();
 
                         editor.putString("name",profile.getFirstName());
                         editor.commit();
-                        startActivity(new Intent(MainActivity.this,AfterLogin_Activity.class));
+                        startActivity(intent);
                         finishAffinity();
                     }
 
                     @Override
-                    public void onCancel() {
+                    public void onCancel()
+                    {
                         Toast.makeText(MainActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
                     }
 
@@ -127,8 +150,9 @@ public class MainActivity extends AppCompatActivity {
       button.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              Toast.makeText(MainActivity.this, "buton", Toast.LENGTH_SHORT).show();
+
               LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("public_profile", "email"));
+
 
           }
       });

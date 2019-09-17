@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/profilepic_id"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:foregroundGravity="center_horizontal"
@@ -19,6 +19,7 @@
 
         android:visibility="visible"
         />
+
 
     <TextView
         android:id="@+id/text_nameid"
@@ -54,6 +55,9 @@
 
     <Button
         android:id="@+id/btn_loginid"
+        android:background="#416BC1"
+
+        android:textColor="#ffffff"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
